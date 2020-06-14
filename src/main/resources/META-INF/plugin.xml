@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>org.example.PluginDemoK</id>
+    <name>ImpactAnalysis</name>
+    <version>1.0-SNAPSHOT</version>
+    <vendor email="support@plugdemo.com" url="http://www.plugdemo.com">plugdemo</vendor>
+
+    <description><![CDATA[
+    impact analysis plugin
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="ImpactAnalysis.DoAnalyse" text="Analyse" description="Start analyse">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action class="Analyse" id="ImpactAnalysis.Actions.DoAnalyse" text="Start Analyse"/>
+        </group>
+    </actions>
+</idea-plugin>

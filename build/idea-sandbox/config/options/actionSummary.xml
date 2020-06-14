@@ -1,0 +1,18 @@
+<application>
+  <component name="ActionsLocalSummary">
+    <data>
+      <entry key="EditorBackSpace">
+        <ActionSummary times="2" last="1592103092088" />
+      </entry>
+      <entry key="ImpactAnalysis.Actions.DoAnalyse">
+        <ActionSummary times="16" last="1592103144902" />
+      </entry>
+      <entry key="KotlinConfigureUpdates">
+        <ActionSummary times="1" last="1591787085821" />
+      </entry>
+      <entry key="WelcomeScreen.OpenProject">
+        <ActionSummary times="1" last="1591774930618" />
+      </entry>
+    </data>
+  </component>
+</application>
