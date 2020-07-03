@@ -1,4 +1,5 @@
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import model.MethodEntity;
 
@@ -24,10 +25,15 @@ public class MyToolWindow {
     private javax.swing.JSpinner jSpinnerDepth;
     private javax.swing.JButton jButtonRun;
     private SpinnerNumberModel spinnerNumberModel;
-    private List<MethodEntity> methodList;
 
-    public MyToolWindow(ToolWindow toolWindow) {
+    private List<MethodEntity> methodList;
+    private ProjectManager projectManager;
+    private Project project;
+
+    public MyToolWindow(ToolWindow toolWindow,Project project) {
         initComponents();
+        projectManager=new ProjectManager();
+        this.project=project;
     }
 
     private void initComponents() {
@@ -153,7 +159,7 @@ public class MyToolWindow {
     }
 
     public void actionRun() {
-        methodList = ProjectManager.getClassEntityList(MyToolWindowFactory.project);
+        methodList = projectManager.getClassEntityList(project);
 
         ArrayList<String> strings=new ArrayList<String>();
         int i=0;
