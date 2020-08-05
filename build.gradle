@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:5.4.2.201908231537-r'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

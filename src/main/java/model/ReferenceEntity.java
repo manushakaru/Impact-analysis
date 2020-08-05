@@ -21,6 +21,13 @@ public class ReferenceEntity {
         displayString=psiClass.getName()+"->"+psiMethod.getName();
     }
 
+    public ReferenceEntity(PsiMethod psiMethod) {
+        this.psiReference = psiMethod.getReference();
+        this.psiMethod = psiMethod;
+        psiClass=psiMethod.getContainingClass();
+        displayString=psiClass.getName()+"->"+psiMethod.getName();
+    }
+
     public PsiMethod getPsiMethod() {
         return psiMethod;
     }
@@ -34,10 +41,16 @@ public class ReferenceEntity {
     }
 
     public void navigate() {
-        PsiElement navigationElement = psiReference.getElement().getNavigationElement();
-        if (navigationElement != null && navigationElement instanceof Navigatable && ((Navigatable) navigationElement).canNavigate())
-        {
-            ((Navigatable) navigationElement).navigate(true);
+        try{
+            PsiElement navigationElement = psiReference.getElement().getNavigationElement();
+            if (navigationElement != null && navigationElement instanceof Navigatable && ((Navigatable) navigationElement).canNavigate()) {
+                ((Navigatable) navigationElement).navigate(true);
+            }
+        }catch (Exception e){
+            PsiElement navigationElement = psiMethod.getNavigationElement();
+            if (navigationElement != null && navigationElement instanceof Navigatable && ((Navigatable) navigationElement).canNavigate()) {
+                ((Navigatable) navigationElement).navigate(true);
+            }
         }
     }
 }
