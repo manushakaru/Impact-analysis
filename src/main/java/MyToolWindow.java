@@ -153,6 +153,8 @@ public class MyToolWindow {
 
                         }
                     });
+
+                    ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
                 }
             }
         });
@@ -168,6 +170,7 @@ public class MyToolWindow {
             i++;
         }
         setChanges(Utils.GetStringArray(strings));
+        ImpactLabel.setText("Impact");
     }
 
     public JPanel getContent() {

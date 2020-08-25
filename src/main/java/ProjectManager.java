@@ -26,7 +26,7 @@ public class ProjectManager {
         if (editor == null)
             return methodList;
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-        getElement(4,psiFile,project);
+        //getElement(4,psiFile,project);
         if (psiFile instanceof PsiJavaFile) {
             PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
             analyzeClasses(methodList, psiClasses, project);
@@ -63,7 +63,7 @@ public class ProjectManager {
         try{
             for (PsiReference psiReference :
                     MethodReferencesSearch.search(method, GlobalSearchScope.projectScope(project),false).findAll()) {
-                impactSet.addReference(new ReferenceEntity(psiReference));
+                impactSet.addReference(new ReferenceEntity(psiReference,depth));
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -97,7 +97,7 @@ public class ProjectManager {
                 for(PsiElement child:psiStatements[i].getChildren()){
                     if(child instanceof PsiMethodCallExpression){
                         PsiMethodCallExpression psiMethodCallExpression= (PsiMethodCallExpression)child;
-                        impactSet.addReference(new ReferenceEntity(psiMethodCallExpression.resolveMethod()));
+                        impactSet.addReference(new ReferenceEntity(psiMethodCallExpression.resolveMethod(),depth));
                     }
                 }
             }

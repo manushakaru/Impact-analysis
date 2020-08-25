@@ -14,18 +14,18 @@ public class ReferenceEntity {
     private PsiClass psiClass;
     private String displayString;
 
-    public ReferenceEntity(PsiReference psiReference) {
+    public ReferenceEntity(PsiReference psiReference,int depth) {
         this.psiReference = psiReference;
         psiMethod = PsiTreeUtil.getParentOfType(psiReference.getElement(), PsiMethod.class);
         psiClass=psiMethod.getContainingClass();
-        displayString=psiClass.getName()+"->"+psiMethod.getName();
+        displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+") ^";
     }
 
-    public ReferenceEntity(PsiMethod psiMethod) {
+    public ReferenceEntity(PsiMethod psiMethod,int depth) {
         this.psiReference = psiMethod.getReference();
         this.psiMethod = psiMethod;
         psiClass=psiMethod.getContainingClass();
-        displayString=psiClass.getName()+"->"+psiMethod.getName();
+        displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+")";
     }
 
     public PsiMethod getPsiMethod() {
