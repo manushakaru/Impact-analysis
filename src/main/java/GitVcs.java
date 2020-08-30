@@ -72,14 +72,14 @@ public class GitVcs {
                                 afterMethods.add(method);
                             }
                         }
-                        System.out.println("Checking equal");
+                        //System.out.println("Checking equal");
                         for (PsiMethod psiMethodBefore:beforeMethods) {
                             for (PsiMethod psiMethodAfter:afterMethods) {
                                 if(psiMethodAfter.getName().equals(psiMethodBefore.getName()) && areSignaturesEqual(psiMethodAfter,psiMethodBefore)){
-                                    System.out.println(psiMethodAfter.getName()+" equal "+psiMethodBefore.getName());
+                                    //System.out.println(psiMethodAfter.getName()+" equal "+psiMethodBefore.getName());
                                     String af=psiMethodAfter.getText().trim();
                                     String bef=psiMethodBefore.getText().trim();
-                                    System.out.println("c*"+compare(psiMethodBefore,psiMethodAfter)+"c*");
+                                    System.out.println(psiMethodBefore.getName()+" & "+psiMethodAfter.getName()+" "+compare(psiMethodBefore,psiMethodAfter));
                                     //System.out.println("c*"+ psiMethodAfter.toString()+"c*");
                                     //System.out.println("c*"+ psiMethodBefore+"c*");
                                     /*for (PsiElement psi:psiMethodAfter.getBody().getChildren()
@@ -92,6 +92,8 @@ public class GitVcs {
                                         System.out.println(psi.getChildren());
                                     }*/
 
+                                }else{
+                                    System.out.println(psiMethodBefore.getName()+" & "+psiMethodAfter.getName()+" "+0);
                                 }
                             }
                         }
@@ -122,13 +124,13 @@ public class GitVcs {
 
     public static int compare(PsiElement before, PsiElement after) {
         if (!before.toString().equals(after.toString())) {
-            System.out.println(before+"="+after);
+            //System.out.println(before+"="+after);
             return 0;
         } else {
             if (before.getChildren().length == 0 || after.getChildren().length == 0) {
                 return 1;
             } else if (after.getChildren().length != before.getChildren().length) {
-                System.out.println(before.getChildren().length+"="+after.getChildren().length);
+                //System.out.println(before.getChildren().length+"="+after.getChildren().length);
                 return 0;
             } else {
                 int comp = 1;
