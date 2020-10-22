@@ -3,6 +3,9 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.PsiDocumentManagerImpl;
@@ -13,6 +16,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import model.ImpactSet;
 import model.MethodEntity;
 import model.ReferenceEntity;
+import org.jetbrains.annotations.NotNull;
 import org.jf.dexlib2.iface.reference.MethodReference;
 
 import java.util.ArrayList;
@@ -28,18 +32,26 @@ public class ProjectManager {
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
         //getElement(4,psiFile,project);
         if (psiFile instanceof PsiJavaFile) {
+            /*ProgressManager.getInstance().run(new Task.Modal(project,"sa",false){
+                @Override
+                public void run(@NotNull ProgressIndicator indicator) {
+
+                }
+            });*/
+
             PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
             analyzeClasses(methodList, psiClasses, project);
-
         }
         return methodList;
     }
 
     private void analyzeClasses(List<MethodEntity> methodList, PsiClass[] psiClasses, Project project) {
+        //float fraction=100/psiClasses.length;
+
         for (PsiClass psiClas : psiClasses) {
             for (PsiMethod method : psiClas.getMethods()) {
 
-                MethodEntity methodEntity=new MethodEntity(method.getName());
+                MethodEntity methodEntity=new MethodEntity(method.getName(),method);
                 methodEntity.setImpactSet(execute(method,Utils.depth,project));
 
                 for (ReferenceEntity referenceEntity:executeCallee(method,Utils.depth).getReferences()) {
@@ -52,6 +64,7 @@ public class ProjectManager {
                 //PsiFile[] psiFile=FilenameIndex.getFilesByName(project,"",GlobalSearchScope.projectScope(project));
 
             }
+            //indicator.setFraction(indicator.getFraction()+fraction);
         }
     }
 

@@ -1,7 +1,13 @@
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import model.MethodEntity;
+import model.ReferenceEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -20,12 +26,13 @@ public class MyToolWindow {
     private javax.swing.JLabel ImpactLabel;
     private javax.swing.JScrollPane ImpactScrollPane;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
+    private javax.swing.JList<ReferenceEntity> jList2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JSpinner jSpinnerDepth;
     private javax.swing.JButton jButtonRun;
     private SpinnerNumberModel spinnerNumberModel;
 
+    private DefaultListModel<ReferenceEntity> listModel;
     private List<MethodEntity> methodList;
     private ProjectManager projectManager;
     private Project project;
@@ -50,11 +57,15 @@ public class MyToolWindow {
         jSpinnerDepth = new javax.swing.JSpinner(spinnerNumberModel);
 
         String[] strings = new String[0];
-        jList1 = new javax.swing.JList<>(strings);
+        //ReferenceEntity[] references = new ReferenceEntity[0];
 
+        jList1 = new javax.swing.JList<>(strings);
         ChangesScrollPane.setViewportView(jList1);
 
-        jList2 = new javax.swing.JList<>(strings);
+        jList2 = new javax.swing.JList<>();
+        listModel=new DefaultListModel<>();
+        jList2.setModel(listModel);
+        jList2.setCellRenderer(new ListItemPanel());
         ImpactScrollPane.setViewportView(jList2);
 
         ChangesLabel.setText("Changes");
@@ -118,13 +129,20 @@ public class MyToolWindow {
         jList1 = new javax.swing.JList<>(strings);
         ChangesScrollPane.setViewportView(jList1);
 
-        jList1.addListSelectionListener(new ListSelectionListener() {
+        /*jList1.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if(e.getValueIsAdjusting()) {
-                    jList2 = new javax.swing.JList<>(Utils.GetStringArray(methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString()));
+                    //jList2 = new javax.swing.JList<ReferenceEntity>();//methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()
+                    //DefaultListModel<ReferenceEntity>
+                    listModel.clear();
+
+                    for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
+                        listModel.addElement(reference);
+                    }
+
                     ImpactScrollPane.setViewportView(jList2);
-                    jList2.addMouseListener(new MouseListener() {
+                    jList2.addMouseListener(new ListListener() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             JList list = (JList)e.getSource();
@@ -132,25 +150,33 @@ public class MyToolWindow {
                                 methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
                             }
                         }
+                    });
 
+                    ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
+                }
+            }
+        });*/
+        jList1.addMouseListener(new ListListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList list = (JList)e.getSource();
+                if (e.getClickCount() == 2) {
+                    methodList.get(jList1.getSelectedIndex()).navigate();
+                }else if(e.getClickCount() == 1) {
+                    listModel.clear();
+
+                    for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
+                        listModel.addElement(reference);
+                    }
+
+                    ImpactScrollPane.setViewportView(jList2);
+                    jList2.addMouseListener(new ListListener() {
                         @Override
-                        public void mousePressed(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseReleased(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-
+                        public void mouseClicked(MouseEvent e) {
+                            JList list = (JList)e.getSource();
+                            if (e.getClickCount() == 2) {
+                                methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
+                            }
                         }
                     });
 
@@ -169,6 +195,7 @@ public class MyToolWindow {
             strings.add(method.toString());
             i++;
         }
+
         setChanges(Utils.GetStringArray(strings));
         ImpactLabel.setText("Impact");
     }

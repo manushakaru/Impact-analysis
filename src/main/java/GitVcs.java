@@ -100,7 +100,7 @@ public class GitVcs {
                     }
                     //-->Important-->PsiFile psiFile = PsiManager.getInstance(project).findFile(change.getVirtualFile());
                 }catch (Exception e){
-
+                    System.out.println(e.getMessage());
                 }
                 //PsiFile[] psiFiles= FilenameIndex.getFilesByName(project,afterRevision.getFile().getName(), GlobalSearchScope.projectScope(project));
 

@@ -13,11 +13,15 @@ public class ReferenceEntity {
     private PsiMethod psiMethod;
     private PsiClass psiClass;
     private String displayString;
+    private int depth;
+    private boolean isCaller = false;
 
     public ReferenceEntity(PsiReference psiReference,int depth) {
         this.psiReference = psiReference;
         psiMethod = PsiTreeUtil.getParentOfType(psiReference.getElement(), PsiMethod.class);
         psiClass=psiMethod.getContainingClass();
+        this.depth=depth;
+        this.isCaller=true;
         displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+") ^";
     }
 
@@ -25,6 +29,7 @@ public class ReferenceEntity {
         this.psiReference = psiMethod.getReference();
         this.psiMethod = psiMethod;
         psiClass=psiMethod.getContainingClass();
+        this.depth=depth;
         displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+")";
     }
 
@@ -38,6 +43,14 @@ public class ReferenceEntity {
 
     public String getDisplayString() {
         return displayString;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public boolean isCaller() {
+        return isCaller;
     }
 
     public void navigate() {
