@@ -1,3 +1,5 @@
+import com.intellij.openapi.editor.colors.EditorColorsManager;
+import com.intellij.structuralsearch.plugin.ui.UIUtil;
 import model.ReferenceEntity;
 
 import javax.swing.*;
@@ -88,8 +90,8 @@ public class ListItemPanel extends javax.swing.JPanel implements ListCellRendere
     private javax.swing.JLabel MethodLabel;
     private Color textSelectionColor = Color.WHITE;
     private Color backgroundSelectionColor = new java.awt.Color(38,118,191);
-    private Color textNonSelectionColor = Color.BLACK;
-    private Color backgroundNonSelectionColor = Color.WHITE;
+    private Color textNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultForeground();
+    private Color backgroundNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultBackground();
     private Icon iconUp;
     private Icon iconDown;
     private Icon iconClass;

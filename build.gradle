@@ -17,7 +17,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2020.1.2'
+    version '2020.2'
     plugins 'android','java', 'Git4Idea'
 }
 
@@ -35,6 +35,6 @@ idea {
 task runPlugin(dependsOn: ['prepareSandbox', 'runIdea'])
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      <h1>Impact Analysis Plugin</h1><br>
+      <em>Latest changes - Added git change analysis </em>"""
 }
