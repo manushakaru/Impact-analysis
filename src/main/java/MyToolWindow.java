@@ -53,7 +53,7 @@ public class MyToolWindow {
         ChangesLabel = new javax.swing.JLabel();
         ImpactLabel = new javax.swing.JLabel();
         jButtonRun = new javax.swing.JButton();
-        spinnerNumberModel=new SpinnerNumberModel(1,1,5,1);
+        spinnerNumberModel=new SpinnerNumberModel(1,1,20,1);
         jSpinnerDepth = new javax.swing.JSpinner(spinnerNumberModel);
 
         String[] strings = new String[0];
