@@ -32,13 +32,6 @@ public class ProjectManager {
         PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
         //getElement(4,psiFile,project);
         if (psiFile instanceof PsiJavaFile) {
-            /*ProgressManager.getInstance().run(new Task.Modal(project,"sa",false){
-                @Override
-                public void run(@NotNull ProgressIndicator indicator) {
-
-                }
-            });*/
-
             PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
             analyzeClasses(methodList, psiClasses, project);
         }
@@ -76,10 +69,10 @@ public class ProjectManager {
         try{
             for (PsiReference psiReference :
                     MethodReferencesSearch.search(method, GlobalSearchScope.projectScope(project),false).findAll()) {
-                impactSet.addReference(new ReferenceEntity(psiReference,depth));
+                impactSet.addReference(new ReferenceEntity(psiReference,Utils.depth-depth+1));
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("ProjectManager:75:"+e.getMessage());
         }
 
         ImpactSet indirectImpactSet =new ImpactSet();
@@ -110,12 +103,13 @@ public class ProjectManager {
                 for(PsiElement child:psiStatements[i].getChildren()){
                     if(child instanceof PsiMethodCallExpression){
                         PsiMethodCallExpression psiMethodCallExpression= (PsiMethodCallExpression)child;
-                        impactSet.addReference(new ReferenceEntity(psiMethodCallExpression.resolveMethod(),depth));
+                        impactSet.addReference(new ReferenceEntity(psiMethodCallExpression.resolveMethod(),Utils.depth-depth+1));
                     }
                 }
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("ProjectManager:111:"+e.getMessage()+" > "+method.getName());
+            e.printStackTrace();
         }
 
         ImpactSet indirectImpactSet =new ImpactSet();

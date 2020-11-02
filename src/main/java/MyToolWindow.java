@@ -31,6 +31,8 @@ public class MyToolWindow {
     private javax.swing.JSpinner jSpinnerDepth;
     private javax.swing.JButton jButtonRun;
     private SpinnerNumberModel spinnerNumberModel;
+    private javax.swing.JRadioButton jRBCurrent;
+    private javax.swing.JRadioButton jRBGit;
 
     private DefaultListModel<ReferenceEntity> listModel;
     private List<MethodEntity> methodList;
@@ -55,6 +57,8 @@ public class MyToolWindow {
         jButtonRun = new javax.swing.JButton();
         spinnerNumberModel=new SpinnerNumberModel(1,1,20,1);
         jSpinnerDepth = new javax.swing.JSpinner(spinnerNumberModel);
+        jRBGit = new javax.swing.JRadioButton();
+        jRBCurrent = new javax.swing.JRadioButton();
 
         String[] strings = new String[0];
         //ReferenceEntity[] references = new ReferenceEntity[0];
@@ -70,7 +74,10 @@ public class MyToolWindow {
 
         ChangesLabel.setText("Changes");
         ImpactLabel.setText("Impact");
+        jRBGit.setText("Git");
+        jRBCurrent.setText("Current");
         jButtonRun.setText("Run");
+        jRBCurrent.setSelected(true);
         jButtonRun.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -83,43 +90,71 @@ public class MyToolWindow {
         mainPanelLayout.setHorizontalGroup(
                 mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(11, 11, 11)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(ChangesLabel)
-                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(15, 15, 15)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(ImpactScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                                                .addGap(11, 11, 11))
-                                        .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(ImpactLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                                                .addComponent(jRBCurrent)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jRBGit)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(jSpinnerDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonRun)
-                                                .addContainerGap())))
+                                                .addComponent(jButtonRun))
+                                        .addComponent(ImpactScrollPane))
+                                .addGap(11, 11, 11))
         );
         mainPanelLayout.setVerticalGroup(
                 mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(11, 11, 11)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(ImpactLabel)
                                         .addComponent(jButtonRun)
                                         .addComponent(jSpinnerDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(ChangesLabel))
+                                        .addComponent(ChangesLabel)
+                                        .addComponent(jRBGit)
+                                        .addComponent(jRBCurrent))
                                 .addGap(4, 4, 4)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ImpactScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addContainerGap())
+                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                                        .addComponent(ImpactScrollPane))
+                                .addGap(11, 11, 11))
         );
 
         jSpinnerDepth.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 Utils.depth=(Integer)jSpinnerDepth.getValue();
+            }
+        });
+
+        jRBCurrent.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(jRBCurrent.isSelected()){
+                    jRBGit.setSelected(false);
+                    Utils.isCurrent=true;
+                }else{
+                    jRBGit.setSelected(true);
+                    Utils.isCurrent=false;
+                }
+            }
+        });
+
+        jRBGit.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(jRBGit.isSelected()){
+                    jRBCurrent.setSelected(false);
+                }else{
+                    jRBCurrent.setSelected(true);
+                }
             }
         });
 
@@ -159,7 +194,6 @@ public class MyToolWindow {
         jList1.addMouseListener(new ListListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JList list = (JList)e.getSource();
                 if (e.getClickCount() == 2) {
                     methodList.get(jList1.getSelectedIndex()).navigate();
                 }else if(e.getClickCount() == 1) {
@@ -167,6 +201,7 @@ public class MyToolWindow {
 
                     for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
                         listModel.addElement(reference);
+
                     }
 
                     ImpactScrollPane.setViewportView(jList2);
@@ -187,6 +222,13 @@ public class MyToolWindow {
     }
 
     public void actionRun() {
+        /*ProgressManager.getInstance().run(new Task.Backgroundable(project,"Searching") {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+
+            }
+        });*/
+
         methodList = projectManager.getClassEntityList(project);
 
         ArrayList<String> strings=new ArrayList<String>();

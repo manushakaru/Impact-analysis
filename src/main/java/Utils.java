@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Utils {
     public static int depth=1;
+    public static boolean isCurrent=true;
 
     public static String[] GetStringArray(ArrayList<String> arr)
     {//check to get from directly Referance entity
