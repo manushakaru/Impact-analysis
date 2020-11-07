@@ -13,7 +13,7 @@ public class Analyse extends com.intellij.openapi.actionSystem.AnAction {
         /*analyseReport=new AnalyseReport(true);
         String depth=Messages.showInputDialog("Insert Depth","Analyse",Messages.getInformationIcon());
         analyseReport.showAndGet();*/
-        GitVcs.getAffectedFiles("",e.getProject());
+        GitVcs.getAffectedFiles(e.getProject());
 
     }
 }
