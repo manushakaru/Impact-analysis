@@ -1,82 +1,73 @@
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressIndicatorProvider;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import model.MethodEntity;
 import model.ReferenceEntity;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyToolWindow {
-    private javax.swing.JLabel ChangesLabel;
-    private javax.swing.JScrollPane ChangesScrollPane;
-    private javax.swing.JLabel ImpactLabel;
-    private javax.swing.JScrollPane ImpactScrollPane;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<ReferenceEntity> jList2;
-    private javax.swing.JPanel mainPanel;
-    private javax.swing.JSpinner jSpinnerDepth;
-    private javax.swing.JButton jButtonRun;
-    private SpinnerNumberModel spinnerNumberModel;
-    private javax.swing.JRadioButton jRBCurrent;
-    private javax.swing.JRadioButton jRBGit;
 
+    private javax.swing.JLabel changesLabel;
+    private javax.swing.JScrollPane changesScrollPane;
+    private javax.swing.JLabel impactLabel;
+    private javax.swing.JScrollPane impactScrollPane;
+    private javax.swing.JList<String> changesList;
+    private javax.swing.JList<ReferenceEntity> impactList;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JSpinner depthSpinner;
+    private javax.swing.JButton runBtn;
+    private SpinnerNumberModel spinnerNumberModel;
+    private javax.swing.JRadioButton currentRB;
+    private javax.swing.JRadioButton gitRB;
     private DefaultListModel<ReferenceEntity> listModel;
     private List<MethodEntity> methodList;
-    private ProjectManager projectManager;
-    private Project project;
+    private final ProjectManager projectManager;
+    private final Project project;
 
-    public MyToolWindow(ToolWindow toolWindow,Project project) {
+    public MyToolWindow(ToolWindow toolWindow, Project project) {
         initComponents();
-        projectManager=new ProjectManager();
-        this.project=project;
+        projectManager = new ProjectManager();
+        this.project = project;
     }
 
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        ChangesScrollPane = new javax.swing.JScrollPane();
+        changesScrollPane = new javax.swing.JScrollPane();
 
-        ImpactScrollPane = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        ChangesLabel = new javax.swing.JLabel();
-        ImpactLabel = new javax.swing.JLabel();
-        jButtonRun = new javax.swing.JButton();
-        spinnerNumberModel=new SpinnerNumberModel(1,1,20,1);
-        jSpinnerDepth = new javax.swing.JSpinner(spinnerNumberModel);
-        jRBGit = new javax.swing.JRadioButton();
-        jRBCurrent = new javax.swing.JRadioButton();
+        impactScrollPane = new javax.swing.JScrollPane();
+        impactList = new javax.swing.JList<>();
+        changesLabel = new javax.swing.JLabel();
+        impactLabel = new javax.swing.JLabel();
+        runBtn = new javax.swing.JButton();
+        spinnerNumberModel = new SpinnerNumberModel(1, 1, 20, 1);
+        depthSpinner = new javax.swing.JSpinner(spinnerNumberModel);
+        gitRB = new javax.swing.JRadioButton();
+        currentRB = new javax.swing.JRadioButton();
 
         String[] strings = new String[0];
 
-        jList1 = new javax.swing.JList<>(strings);
-        ChangesScrollPane.setViewportView(jList1);
+        changesList = new javax.swing.JList<>(strings);
+        changesScrollPane.setViewportView(changesList);
 
-        jList2 = new javax.swing.JList<>();
-        listModel=new DefaultListModel<>();
-        jList2.setModel(listModel);
-        jList2.setCellRenderer(new ListItemPanel());
-        ImpactScrollPane.setViewportView(jList2);
+        impactList = new javax.swing.JList<>();
+        listModel = new DefaultListModel<>();
+        impactList.setModel(listModel);
+        impactList.setCellRenderer(new ListItemPanel());
+        impactScrollPane.setViewportView(impactList);
 
-        ChangesLabel.setText("Methods");
-        ImpactLabel.setText("Impact");
-        jRBGit.setText("Git");
-        jRBCurrent.setText("Current");
-        jButtonRun.setText("Run");
-        jRBCurrent.setSelected(true);
+        changesLabel.setText("Methods");
+        impactLabel.setText("Impact");
+        gitRB.setText("Git");
+        currentRB.setText("Current");
+        runBtn.setText("Run");
+        currentRB.setSelected(true);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -85,21 +76,21 @@ public class MyToolWindow {
                         .addGroup(mainPanelLayout.createSequentialGroup()
                                 .addGap(11, 11, 11)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ChangesLabel)
-                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
+                                        .addComponent(changesLabel)
+                                        .addComponent(changesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(ImpactLabel)
+                                                .addComponent(impactLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                                                .addComponent(jRBCurrent)
+                                                .addComponent(currentRB)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jRBGit)
+                                                .addComponent(gitRB)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jSpinnerDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonRun))
-                                        .addComponent(ImpactScrollPane))
+                                                .addComponent(runBtn))
+                                        .addComponent(impactScrollPane))
                                 .addGap(11, 11, 11))
         );
         mainPanelLayout.setVerticalGroup(
@@ -107,98 +98,67 @@ public class MyToolWindow {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                                 .addGap(11, 11, 11)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ImpactLabel)
-                                        .addComponent(jButtonRun)
-                                        .addComponent(jSpinnerDepth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(ChangesLabel)
-                                        .addComponent(jRBGit)
-                                        .addComponent(jRBCurrent))
+                                        .addComponent(impactLabel)
+                                        .addComponent(runBtn)
+                                        .addComponent(depthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(changesLabel)
+                                        .addComponent(gitRB)
+                                        .addComponent(currentRB))
                                 .addGap(4, 4, 4)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-                                        .addComponent(ImpactScrollPane))
+                                        .addComponent(changesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                                        .addComponent(impactScrollPane))
                                 .addGap(11, 11, 11))
         );
 
-        jButtonRun.addActionListener(new AbstractAction() {
+        runBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jButtonRun.setEnabled(false);
+                runBtn.setEnabled(false);
                 actionRun();
-                jButtonRun.setEnabled(true);
+                runBtn.setEnabled(true);
             }
         });
 
-        jSpinnerDepth.addChangeListener(new ChangeListener() {
+        depthSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Utils.depth=(Integer)jSpinnerDepth.getValue();
+                Utils.depth = (Integer) depthSpinner.getValue();
             }
         });
 
-        jRBCurrent.addChangeListener(new ChangeListener() {
+        currentRB.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(jRBCurrent.isSelected()){
-                    jRBGit.setSelected(false);
-                    Utils.isCurrent=true;
-                }else{
-                    jRBGit.setSelected(true);
-                    Utils.isCurrent=false;
+                if (currentRB.isSelected()) {
+                    gitRB.setSelected(false);
+                    Utils.isCurrent = true;
+                } else {
+                    gitRB.setSelected(true);
+                    Utils.isCurrent = false;
                 }
             }
         });
 
-        jRBGit.addChangeListener(new ChangeListener() {
+        gitRB.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(jRBGit.isSelected()){
-                    jRBCurrent.setSelected(false);
-                }else{
-                    jRBCurrent.setSelected(true);
-                }
+                currentRB.setSelected(!gitRB.isSelected());
             }
         });
 
     }
 
-    public void setChanges(String[] strings){
-        jList1 = new javax.swing.JList<>(strings);
-        ChangesScrollPane.setViewportView(jList1);
+    public void setChanges(String[] strings) {
+        changesList = new javax.swing.JList<>(strings);
+        changesScrollPane.setViewportView(changesList);
 
-        /*jList1.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) {
-                    //jList2 = new javax.swing.JList<ReferenceEntity>();//methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()
-                    //DefaultListModel<ReferenceEntity>
-                    listModel.clear();
-
-                    for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
-                        listModel.addElement(reference);
-                    }
-
-                    ImpactScrollPane.setViewportView(jList2);
-                    jList2.addMouseListener(new ListListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            JList list = (JList)e.getSource();
-                            if (e.getClickCount() == 2) {
-                                methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
-                            }
-                        }
-                    });
-
-                    ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
-                }
-            }
-        });*/
-        jList1.addMouseListener(new ListListener() {
+        changesList.addMouseListener(new ListListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    methodList.get(jList1.getSelectedIndex()).navigate();
-                }else if(e.getClickCount() == 1) {
+                    methodList.get(changesList.getSelectedIndex()).navigate();
+                } else if (e.getClickCount() == 1) {
                     createImpactList();
                 }
             }
@@ -206,46 +166,40 @@ public class MyToolWindow {
     }
 
     public void actionRun() {
-        /*ProgressManager.getInstance().run(new Task.Backgroundable(project,"Searching") {
-            @Override
-            public void run(@NotNull ProgressIndicator indicator) {
-
-            }
-        });*/
 
         methodList = projectManager.getClassEntityList(project);
+        ArrayList<String> strings = new ArrayList<String>();
+        int i = 0;
 
-        ArrayList<String> strings=new ArrayList<String>();
-        int i=0;
         for (MethodEntity method : methodList) {
             strings.add(method.toString());
             i++;
         }
 
         setChanges(Utils.GetStringArray(strings));
-        jList1.setSelectedIndex(0);
+        changesList.setSelectedIndex(0);
         createImpactList();
     }
 
-    public void createImpactList(){
+    public void createImpactList() {
         listModel.clear();
 
-        for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
+        for (ReferenceEntity reference : methodList.get(changesList.getSelectedIndex()).getImpactSet().getReferences()) {
             listModel.addElement(reference);
         }
 
-        ImpactScrollPane.setViewportView(jList2);
-        jList2.addMouseListener(new ListListener() {
+        impactScrollPane.setViewportView(impactList);
+        impactList.addMouseListener(new ListListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JList list = (JList)e.getSource();
+                JList list = (JList) e.getSource();
                 if (e.getClickCount() == 2) {
-                    methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
+                    methodList.get(changesList.getSelectedIndex()).getImpactSet().navigate(impactList.getSelectedIndex());
                 }
             }
         });
 
-        ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
+        impactLabel.setText("Impact(" + methodList.get(changesList.getSelectedIndex()).getImpactSet().getReferencesString().size() + ")");
     }
 
     public JPanel getContent() {

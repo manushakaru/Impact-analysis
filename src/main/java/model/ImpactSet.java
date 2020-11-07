@@ -1,18 +1,14 @@
 package model;
 
-import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-
 import java.util.ArrayList;
 
 public class ImpactSet {
-    private ArrayList<ReferenceEntity> references;
-    private ArrayList<String> referencesString;
+    private final ArrayList<ReferenceEntity> references;
+    private final ArrayList<String> referencesString;
 
     public ImpactSet() {
-        references=new ArrayList<ReferenceEntity>();
-        referencesString=new ArrayList<String>();
+        references = new ArrayList<>();
+        referencesString = new ArrayList<>();
     }
 
     public void addReference(ReferenceEntity reference) {
@@ -32,9 +28,11 @@ public class ImpactSet {
         return referencesString;
     }
 
-    public ArrayList<ReferenceEntity> getReferences() { return references; }
+    public ArrayList<ReferenceEntity> getReferences() {
+        return references;
+    }
 
-    public boolean contains(ReferenceEntity referenceEntity){
+    public boolean contains(ReferenceEntity referenceEntity) {
         //to check signature
         return referencesString.contains(referenceEntity.getDisplayString());
     }

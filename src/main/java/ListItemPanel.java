@@ -1,5 +1,4 @@
 import com.intellij.openapi.editor.colors.EditorColorsManager;
-import com.intellij.structuralsearch.plugin.ui.UIUtil;
 import model.ReferenceEntity;
 
 import javax.swing.*;
@@ -7,6 +6,17 @@ import java.awt.*;
 
 public class ListItemPanel extends javax.swing.JPanel implements ListCellRenderer<ReferenceEntity> {
 
+    private javax.swing.JLabel classLabel;
+    private javax.swing.JLabel depthLabel;
+    private javax.swing.JLabel methodLabel;
+    private final Color textSelectionColor = Color.WHITE;
+    private final Color backgroundSelectionColor = new java.awt.Color(38, 118, 191);
+    private final Color textNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultForeground();
+    private final Color backgroundNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultBackground();
+    private Icon iconUp;
+    private Icon iconDown;
+    private Icon iconClass;
+    private Icon iconMethod;
     public ListItemPanel() {
         initComponents();
     }
@@ -14,22 +24,22 @@ public class ListItemPanel extends javax.swing.JPanel implements ListCellRendere
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        ClassLabel = new javax.swing.JLabel();
-        MethodLabel = new javax.swing.JLabel();
-        DepthLabel = new javax.swing.JLabel();
+        classLabel = new javax.swing.JLabel();
+        methodLabel = new javax.swing.JLabel();
+        depthLabel = new javax.swing.JLabel();
 
-        iconUp=new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/up.png")).getImage());
-        iconDown=new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/down.png")).getImage());
-        iconClass=new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/class.png")).getImage());
-        iconMethod=new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/method.png")).getImage());
+        iconUp = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/up.png")).getImage());
+        iconDown = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/down.png")).getImage());
+        iconClass = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/class.png")).getImage());
+        iconMethod = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("drawables/method.png")).getImage());
 
         setBackground(backgroundNonSelectionColor);
 
-        ClassLabel.setText("Class");
+        classLabel.setText("Class");
 
-        MethodLabel.setText("Method");
+        methodLabel.setText("Method");
 
-        DepthLabel.setText("Depth");
+        depthLabel.setText("Depth");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -37,11 +47,11 @@ public class ListItemPanel extends javax.swing.JPanel implements ListCellRendere
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
-                                .addComponent(ClassLabel)
+                                .addComponent(classLabel)
                                 .addGap(10, 10, 10)
-                                .addComponent(MethodLabel)
+                                .addComponent(methodLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
-                                .addComponent(DepthLabel)
+                                .addComponent(depthLabel)
                                 .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
@@ -49,52 +59,40 @@ public class ListItemPanel extends javax.swing.JPanel implements ListCellRendere
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ClassLabel)
-                                        .addComponent(MethodLabel)
-                                        .addComponent(DepthLabel))
+                                        .addComponent(classLabel)
+                                        .addComponent(methodLabel)
+                                        .addComponent(depthLabel))
                                 .addGap(2, 2, 2))
         );
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends ReferenceEntity> list, ReferenceEntity value, int index, boolean isSelected, boolean cellHasFocus) {
-        ClassLabel.setText(value.getPsiClass().getName());
-        MethodLabel.setText(value.getPsiMethod().getName());
-        DepthLabel.setText(String.valueOf(value.getDepth()));
+        classLabel.setText(value.getPsiClass().getName());
+        methodLabel.setText(value.getPsiMethod().getName());
+        depthLabel.setText(String.valueOf(value.getDepth()));
 
-        ClassLabel.setIcon(iconClass);
-        MethodLabel.setIcon(iconMethod);
-        if(value.isCaller()) {
-            DepthLabel.setIcon(iconUp);
-        }else {
-            DepthLabel.setIcon(iconDown);
+        classLabel.setIcon(iconClass);
+        methodLabel.setIcon(iconMethod);
+        if (value.isCaller()) {
+            depthLabel.setIcon(iconUp);
+        } else {
+            depthLabel.setIcon(iconDown);
         }
 
         if (cellHasFocus) {
             setBackground(backgroundSelectionColor);
-            ClassLabel.setForeground(textSelectionColor);
-            MethodLabel.setForeground(textSelectionColor);
-            DepthLabel.setForeground(textSelectionColor);
+            classLabel.setForeground(textSelectionColor);
+            methodLabel.setForeground(textSelectionColor);
+            depthLabel.setForeground(textSelectionColor);
         } else {
             setBackground(backgroundNonSelectionColor);
-            ClassLabel.setForeground(textNonSelectionColor);
-            MethodLabel.setForeground(textNonSelectionColor);
-            DepthLabel.setForeground(textNonSelectionColor);
+            classLabel.setForeground(textNonSelectionColor);
+            methodLabel.setForeground(textNonSelectionColor);
+            depthLabel.setForeground(textNonSelectionColor);
         }
 
         return this;
     }
-
-    private javax.swing.JLabel ClassLabel;
-    private javax.swing.JLabel DepthLabel;
-    private javax.swing.JLabel MethodLabel;
-    private Color textSelectionColor = Color.WHITE;
-    private Color backgroundSelectionColor = new java.awt.Color(38,118,191);
-    private Color textNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultForeground();
-    private Color backgroundNonSelectionColor = EditorColorsManager.getInstance().getGlobalScheme().getDefaultBackground();
-    private Icon iconUp;
-    private Icon iconDown;
-    private Icon iconClass;
-    private Icon iconMethod;
 
 }
