@@ -35,6 +35,7 @@ public class ImpactSet {
     public ArrayList<ReferenceEntity> getReferences() { return references; }
 
     public boolean contains(ReferenceEntity referenceEntity){
+        //to check signature
         return referencesString.contains(referenceEntity.getDisplayString());
     }
 

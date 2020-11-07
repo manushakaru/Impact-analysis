@@ -12,8 +12,8 @@ public class MethodEntity {
     private ImpactSet impactSet;
     private PsiMethod psiMethod;
 
-    public MethodEntity(String name,PsiMethod psiMethod) {
-        this.name = name;
+    public MethodEntity(PsiMethod psiMethod) {
+        this.name = psiMethod.getName();
         this.psiMethod=psiMethod;
     }
 
@@ -28,6 +28,10 @@ public class MethodEntity {
 
     public ImpactSet getImpactSet() {
         return impactSet;
+    }
+
+    public PsiMethod getPsiMethod() {
+        return psiMethod;
     }
 
     public void navigate() {

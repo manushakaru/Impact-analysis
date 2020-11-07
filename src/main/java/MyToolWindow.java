@@ -61,7 +61,6 @@ public class MyToolWindow {
         jRBCurrent = new javax.swing.JRadioButton();
 
         String[] strings = new String[0];
-        //ReferenceEntity[] references = new ReferenceEntity[0];
 
         jList1 = new javax.swing.JList<>(strings);
         ChangesScrollPane.setViewportView(jList1);
@@ -72,18 +71,12 @@ public class MyToolWindow {
         jList2.setCellRenderer(new ListItemPanel());
         ImpactScrollPane.setViewportView(jList2);
 
-        ChangesLabel.setText("Changes");
+        ChangesLabel.setText("Methods");
         ImpactLabel.setText("Impact");
         jRBGit.setText("Git");
         jRBCurrent.setText("Current");
         jButtonRun.setText("Run");
         jRBCurrent.setSelected(true);
-        jButtonRun.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actionRun();
-            }
-        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -93,8 +86,8 @@ public class MyToolWindow {
                                 .addGap(11, 11, 11)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(ChangesLabel)
-                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15)
+                                        .addComponent(ChangesScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(mainPanelLayout.createSequentialGroup()
                                                 .addComponent(ImpactLabel)
@@ -126,6 +119,15 @@ public class MyToolWindow {
                                         .addComponent(ImpactScrollPane))
                                 .addGap(11, 11, 11))
         );
+
+        jButtonRun.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonRun.setEnabled(false);
+                actionRun();
+                jButtonRun.setEnabled(true);
+            }
+        });
 
         jSpinnerDepth.addChangeListener(new ChangeListener() {
             @Override
@@ -197,25 +199,7 @@ public class MyToolWindow {
                 if (e.getClickCount() == 2) {
                     methodList.get(jList1.getSelectedIndex()).navigate();
                 }else if(e.getClickCount() == 1) {
-                    listModel.clear();
-
-                    for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
-                        listModel.addElement(reference);
-
-                    }
-
-                    ImpactScrollPane.setViewportView(jList2);
-                    jList2.addMouseListener(new ListListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            JList list = (JList)e.getSource();
-                            if (e.getClickCount() == 2) {
-                                methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
-                            }
-                        }
-                    });
-
-                    ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
+                    createImpactList();
                 }
             }
         });
@@ -239,7 +223,29 @@ public class MyToolWindow {
         }
 
         setChanges(Utils.GetStringArray(strings));
-        ImpactLabel.setText("Impact");
+        jList1.setSelectedIndex(0);
+        createImpactList();
+    }
+
+    public void createImpactList(){
+        listModel.clear();
+
+        for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
+            listModel.addElement(reference);
+        }
+
+        ImpactScrollPane.setViewportView(jList2);
+        jList2.addMouseListener(new ListListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList list = (JList)e.getSource();
+                if (e.getClickCount() == 2) {
+                    methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
+                }
+            }
+        });
+
+        ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
     }
 
     public JPanel getContent() {

@@ -25,26 +25,31 @@ import java.util.List;
 public class ProjectManager {
 
     public List<MethodEntity> getClassEntityList(Project project) {
-        List<MethodEntity> methodList = new ArrayList<>();
-        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
-        if (editor == null)
+        if(Utils.isCurrent) {
+            List<MethodEntity> methodList = new ArrayList<>();
+            Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+            if (editor == null)
+                return methodList;
+            PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+
+            if (psiFile instanceof PsiJavaFile) {
+                PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
+                analyzeClasses(methodList, psiClasses, project);
+            }
+
             return methodList;
-        PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-        //getElement(4,psiFile,project);
-        if (psiFile instanceof PsiJavaFile) {
-            PsiClass[] psiClasses = ((PsiJavaFile) psiFile).getClasses();
-            analyzeClasses(methodList, psiClasses, project);
+        }else{
+            List<MethodEntity> methodList = GitVcs.getAffectedFiles(project);
+            analyzeClasses(methodList, project);
+            return methodList;
         }
-        return methodList;
     }
 
     private void analyzeClasses(List<MethodEntity> methodList, PsiClass[] psiClasses, Project project) {
-        //float fraction=100/psiClasses.length;
-
         for (PsiClass psiClas : psiClasses) {
             for (PsiMethod method : psiClas.getMethods()) {
 
-                MethodEntity methodEntity=new MethodEntity(method.getName(),method);
+                MethodEntity methodEntity=new MethodEntity(method);
                 methodEntity.setImpactSet(execute(method,Utils.depth,project));
 
                 for (ReferenceEntity referenceEntity:executeCallee(method,Utils.depth).getReferences()) {
@@ -55,10 +60,21 @@ public class ProjectManager {
 
                 methodList.add(methodEntity);
                 //PsiFile[] psiFile=FilenameIndex.getFilesByName(project,"",GlobalSearchScope.projectScope(project));
-
             }
             //indicator.setFraction(indicator.getFraction()+fraction);
         }
+    }
+
+    private void analyzeClasses(List<MethodEntity> methodList, Project project) {
+            for (MethodEntity methodEntity : methodList) {
+                methodEntity.setImpactSet(execute(methodEntity.getPsiMethod(),Utils.depth,project));
+
+                for (ReferenceEntity referenceEntity:executeCallee(methodEntity.getPsiMethod(),Utils.depth).getReferences()) {
+                    if(!methodEntity.getImpactSet().contains(referenceEntity)){
+                        methodEntity.getImpactSet().addReference(referenceEntity);
+                    }
+                }
+            }
     }
 
     public ImpactSet execute(PsiMethod method,int depth,Project project){

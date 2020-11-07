@@ -1,10 +1,7 @@
 package model;
 
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 
 public class ReferenceEntity {
@@ -22,7 +19,8 @@ public class ReferenceEntity {
         psiClass=psiMethod.getContainingClass();
         this.depth=depth;
         this.isCaller=true;
-        displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+") ^";
+        displayString=psiClass.getContainingFile().getContainingDirectory().toString()+"->"+psiClass.getName()+"->"+psiMethod.getSignature(PsiSubstitutor.EMPTY).toString();
+        System.out.println(displayString);
     }
 
     public ReferenceEntity(PsiMethod psiMethod,int depth) {
@@ -30,7 +28,7 @@ public class ReferenceEntity {
         this.psiMethod = psiMethod;
         psiClass=psiMethod.getContainingClass();
         this.depth=depth;
-        displayString=psiClass.getName()+"->"+psiMethod.getName()+" ("+depth+")";
+        displayString=psiClass.getContainingFile().getContainingDirectory().toString()+"->"+psiClass.getName()+"->"+psiMethod.getSignature(PsiSubstitutor.EMPTY).toString();
     }
 
     public PsiMethod getPsiMethod() {
@@ -58,6 +56,7 @@ public class ReferenceEntity {
             PsiElement navigationElement = psiReference.getElement().getNavigationElement();
             if (navigationElement != null && navigationElement instanceof Navigatable && ((Navigatable) navigationElement).canNavigate()) {
                 ((Navigatable) navigationElement).navigate(true);
+
             }
         }catch (Exception e){
             PsiElement navigationElement = psiMethod.getNavigationElement();
