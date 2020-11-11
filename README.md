@@ -1,7 +1,7 @@
 
 
 <p align="right">
-  <img align="left" src="https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/META-INF/pluginIcon.svg" alt="dependencies" />
+  <img align="left" src="https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/META-INF/pluginIcon.svg" alt="plugin icon" />
 <a href="https://github.com/manushakaru/new-tvf/blob/master/package.json">
     <img src="https://img.shields.io/badge/dependencies-up%20to%20date%20-brightgreen.svg" alt="dependencies" />
   </a>
@@ -65,14 +65,15 @@ git clone https://github.com/manushakaru/Impact-analysis
 - You can find the ``` Impact Analysis-1.0.zip ``` under ``` Impact-analysis\build\distributions ``` folder 
 
 ## Install
-
-- Folllow the instructions in ``` Build Plugin ``` to build the plugin
+ 
+- Follow the instructions in ``` Build Plugin ``` to build the plugin **or** download the [``` Impact Analaysis-1.0.zip ```](https://github.com/manushakaru/Impact-analysis/releases/tag/1.0.0)
 - In the Settings/Preferences dialog  ``` Ctrl+Alt+S ``` , select Plugins.
 - On the Plugins page, click The Settings button and then click Install Plugin from Disk.
-- Select the plugin archive file from ``` Impact-analysis\build\distributions ``` folder  and click OK.
+- Select the plugin archive file from ``` Impact-analysis\build\distributions ``` folder **or** downloaded file and click OK.
 - Click OK to apply the changes and restart the IDE if prompted.
 - You can find the plugin at bottom right corner - Access: ``` View | Tool Windows | Impact Analysis ```
- 
+
+
 ## Usage
 
 ### Impact analysis on current .java file 
@@ -80,12 +81,19 @@ git clone https://github.com/manushakaru/Impact-analysis
   - Open java file you need to analyze 
   - Open Impact analysis plugin window 
   - Select ``` Current ``` radio button in plugin window 
-  - Set the depth you need to analyze
+  - Set the ``` Depth ``` you need to analyze
   - Click ``` Run ``` to get all the methods from opened java file
   - Select method from ``` Methods ``` list and you can see the impacted methods in ``` Impact ``` list
   
 ### Impact analysis on Git changes
   - Select ``` Git ``` radio button in plugin window 
   - Click ``` Run ``` to get all the git changes 
-  - Set the depth you need to analyze
+  - Set the ``` Depth ``` you need to analyze
   - Select method from ``` Methods ``` list and you can see the impacted methods in ``` Impact ``` list
+  
+## Special Notations 
+ ![class](https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/drawables/class.png) - Class <br>
+ ![method](https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/drawables/method.png) - Method <br>
+ ![up arrow](https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/drawables/up.png) - Caller <br>
+ ![down arrow](https://github.com/manushakaru/Impact-analysis/blob/master/src/main/resources/drawables/down.png) - Callee <br>
+
