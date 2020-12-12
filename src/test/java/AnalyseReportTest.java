@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 public class AnalyseReportTest {
 
-    @Test
-    public void init() {
-    }
-
-    @Test
-    public void createCenterPanel() {
-    }
+//    @Test
+//    public void init() {
+//    }
+//
+//    @Test
+//    public void createCenterPanel() {
+//    }
 }

@@ -1,17 +1,14 @@
 package model;
 
-import com.intellij.codeInsight.JavaCodeInsightTestCase;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.testFramework.HeavyPlatformTestCase;
-import com.intellij.testFramework.LightJavaCodeInsightTestCase;
+import com.intellij.psi.search.searches.MethodReferencesSearch;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ReferenceEntityTest extends BasePlatformTestCase {
 
@@ -30,18 +27,15 @@ public class ReferenceEntityTest extends BasePlatformTestCase {
     private ReferenceEntity referenceEntity;
     private int depth = 1;
     private PsiMethod psiMethod;
-    private  PsiReference psiReference;
+    private PsiMethod testPsiMethod;
+    private PsiClass testPsiClass;
+    private PsiReference psiReference;
     private PsiClass psiJavaClass;
-
+    private PsiReference testPsiReference;
+    private String testDisplayString;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-//        PsiElementFactory psiElementFactory = myJavaFacade.getElementFactory();
-//        psiJavaClass = psiElementFactory.createClassFromText(javaFile, null);
-//        psiMethod =  psiElementFactory.createMethodFromText(psiMethodString, psiJavaClass);
-//        psiReference = psiMethod.getReference();
-//        assert psiReference != null;
-//        referenceEntity = new ReferenceEntity(psiReference,depth);
         Project project = getProject();
         myFixture.copyDirectoryToProject("src/main",getTestDataPath());
         PsiManager psiManager = getPsiManager();
@@ -51,13 +45,22 @@ public class ReferenceEntityTest extends BasePlatformTestCase {
         if(length > 0) {
             psiJavaClass = ((PsiJavaFile) psiFiles[0]).getClasses()[0];
             psiMethod = (PsiMethod) psiJavaClass.findMethodsByName("getName")[0];
-           // PsiMethod signature = myFixture.findElementByText(psiMethodString, PsiMethod.class);
-            // psiMethod = psiJavaClass.findMethodBySignature(signature, false);
-            psiReference = psiMethod.getReference();
+            for (PsiReference psiReference : MethodReferencesSearch.search(psiMethod,GlobalSearchScope.projectScope(project),false)){
+                if(psiReference != null){
+                    testPsiReference = psiReference;
+                    testPsiMethod = PsiTreeUtil.getParentOfType(psiReference.getElement(), PsiMethod.class);
+                    testPsiClass = testPsiMethod.getContainingClass();
+                    referenceEntity = new ReferenceEntity(testPsiReference, depth);
+                    testDisplayString = testPsiClass
+                            .getContainingFile()
+                            .getContainingDirectory()
+                            .toString()+"->"+psiJavaClass.getName()+"->"+testPsiMethod
+                            .getSignature(PsiSubstitutor.EMPTY)
+                            .toString();
+                    break;
+                }
+            }
         }
-        System.out.println();
-
-
     }
 
     @NotNull
@@ -67,29 +70,30 @@ public class ReferenceEntityTest extends BasePlatformTestCase {
     }
 
     public void testGetPsiMethod() {
-        //assertEquals(psiMethod, referenceEntity.getPsiMethod());
+        assertEquals(testPsiMethod, referenceEntity.getPsiMethod());
     }
 
-    @Test
+
     public void testGetPsiClass() {
-        //assertEquals(psiJavaClass, referenceEntity.getPsiClass());
+        assertEquals(testPsiClass, referenceEntity.getPsiClass());
     }
 
-    @Test
+
     public void testGetDisplayString() {
+        assertEquals(testDisplayString, referenceEntity.getDisplayString());
     }
 
-    @Test
+
     public void testGetDepth() {
-        //assertEquals(depth,referenceEntity.getDepth());
+        assertEquals(depth,referenceEntity.getDepth());
     }
 
-    @Test
+
     public void testIsCaller() {
-        //assertEquals(true, referenceEntity.isCaller());
+        assertTrue(referenceEntity.isCaller());
     }
 
-    @Test
+
     public void testNavigate() {
     }
 }

@@ -1,36 +1,68 @@
 package model;
 
-import org.junit.Test;
+import com.intellij.codeInsight.JavaCodeInsightTestCase;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMethod;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 
-public class ClassEntityTest {
-    private ClassEntity clsEnt = new ClassEntity("test");
-    @Test
-    public void getName() {
-        assertEquals("test", clsEnt.getName());
+public class ClassEntityTest extends JavaCodeInsightTestCase {
+
+    private MethodEntity methodEntity;
+    private PsiFile psiFile;
+    private String javaFile = "public class Foo extends Bar {\n" +
+            "    public Foo(int a, int b) {\n" +
+            "        super(a, b);\n" +
+            "    }\n" +
+            "    \n" +
+            "    public void greeting() {\n" +
+            "        System.out.println(\"Hello\");\n" +
+            "    }\n" +
+            "}";
+    private String psiMethodString = "public void greeting() {\n" +
+            "        System.out.println(\"Hello\");\n" +
+            "    }";
+    private PsiMethod psiMethod;
+    private ClassEntity classEntity;
+    private String testClassName = "TestClass";
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        PsiElementFactory psiElementFactory = myJavaFacade.getElementFactory();
+        PsiClass psiJavaClass = psiElementFactory.createClassFromText(javaFile, null);
+        psiMethod =  psiElementFactory.createMethodFromText(psiMethodString, psiJavaClass);
+        methodEntity = new MethodEntity(psiMethod);
+        classEntity = new ClassEntity(testClassName);
     }
 
-    @Test
-    public void setName() {
-        clsEnt.setName("test_");
-        assertEquals("test_", clsEnt.getName());
+    public void testTestGetName() {
+        assertEquals(testClassName, classEntity.getName());
     }
 
-    @Test
-    public void addMethod() {
-        List<MethodEntity> testMethodList = new ArrayList<>();
-        MethodEntity methodEnt = new MethodEntity("testMethod");
-        testMethodList.add(methodEnt);
-        clsEnt.addMethod(methodEnt);
-        assertEquals(testMethodList.get(0),clsEnt.getMethodList().get(0));
+    public void testTestSetName() {
+        String newName = "NewName";
+        classEntity.setName(newName);
+        assertEquals(newName, classEntity.getName());
+
     }
 
-    @Test
-    public void getMethodList() {
-        assertEquals(0, clsEnt.getMethodList().size());
+    public void testAddMethod() {
+        assertEquals(0, classEntity.getMethodList().size());
+        classEntity.addMethod(methodEntity);
+        assertEquals(1, classEntity.getMethodList().size());
+    }
+
+    public void testGetMethodList() {
+         List<MethodEntity> mMethodList = new ArrayList<MethodEntity>();
+         assertEquals(mMethodList, classEntity.getMethodList());
+         mMethodList.add(methodEntity);
+         classEntity.addMethod(methodEntity);
+         assertEquals(mMethodList, classEntity.getMethodList());
+
     }
 }
