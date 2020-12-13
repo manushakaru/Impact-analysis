@@ -1,11 +1,8 @@
 package model;
 
 import com.intellij.codeInsight.JavaCodeInsightTestCase;
-import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.psi.*;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.testFramework.LightJavaCodeInsightTestCase;
-import com.intellij.testFramework.LightPlatformCodeInsightTestCase;
+
 
 
 public class MethodEntityTest extends JavaCodeInsightTestCase {
