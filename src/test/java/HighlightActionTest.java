@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 public class HighlightActionTest {
 
-//    @Test
-//    public void actionPerformed() {
-//    }
+    @Test
+    public void actionPerformed() {
+    }
 }
