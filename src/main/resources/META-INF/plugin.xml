@@ -19,16 +19,5 @@
     </extensions>
 
     <actions>
-        <group id="ImpactAnalysis.DoAnalyse" text="Analyse" description="Start analyse">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <action class="Analyse" id="ImpactAnalysis.Actions.DoAnalyse" text="Start Analyse"/>
-        </group>
-
-        <group id="com.strv.codemanager.action.higlightMenu" text="Highlight">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <action id="HighlightAction" class="HighlightAction"
-                    text="Highlight methods" description="Highlight all methods in currently opened file"
-                    />
-        </group>
     </actions>
 </idea-plugin>

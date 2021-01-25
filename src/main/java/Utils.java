@@ -5,7 +5,7 @@ public class Utils {
     public static boolean isCurrent=true;
 
     public static String[] GetStringArray(ArrayList<String> arr)
-    {//check to get from directly Referance entity
+    {
         String str[] = new String[arr.size()];
         for (int j = 0; j < arr.size(); j++) {
             str[j] = arr.get(j);

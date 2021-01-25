@@ -1,23 +1,12 @@
-//import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.OpenFileDescriptor;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiDocumentManagerImpl;
-import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.MethodReferencesSearch;
-import com.intellij.psi.util.PsiTreeUtil;
 import model.ImpactSet;
 import model.MethodEntity;
 import model.ReferenceEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jf.dexlib2.iface.reference.MethodReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +46,8 @@ public class ProjectManager {
                         methodEntity.getImpactSet().addReference(referenceEntity);
                     }
                 }
-
                 methodList.add(methodEntity);
-                //PsiFile[] psiFile=FilenameIndex.getFilesByName(project,"",GlobalSearchScope.projectScope(project));
             }
-            //indicator.setFraction(indicator.getFraction()+fraction);
         }
     }
 
@@ -124,7 +110,7 @@ public class ProjectManager {
                 }
             }
         }catch (Exception e){
-            System.out.println("ProjectManager:111:"+e.getMessage()+" > "+method.getName());
+            System.out.println("ProjectManager:116:"+e.getMessage()+" > "+method.getName());
             e.printStackTrace();
         }
 
@@ -144,13 +130,4 @@ public class ProjectManager {
 
         return impactSet;
     }
-
-    public PsiElement getElement(int line,PsiFile psiFile,Project project){
-        final Document document = PsiDocumentManagerImpl.getInstance(project).getDocument(psiFile);
-        final int offset = document.getLineStartOffset(line - 1);
-        PsiMethod psiMethod = PsiTreeUtil.getParentOfType(psiFile.findElementAt(offset), PsiMethod.class);
-        System.out.println("Text : "+psiFile.findElementAt(offset)+psiMethod.getName());
-        return psiFile.findElementAt(offset);
-    }
-
 }

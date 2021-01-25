@@ -4,6 +4,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import model.MethodEntity;
 import model.ReferenceEntity;
@@ -165,34 +166,6 @@ public class MyToolWindow {
     public void setChanges(String[] strings){
         jList1 = new javax.swing.JList<>(strings);
         ChangesScrollPane.setViewportView(jList1);
-
-        /*jList1.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if(e.getValueIsAdjusting()) {
-                    //jList2 = new javax.swing.JList<ReferenceEntity>();//methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()
-                    //DefaultListModel<ReferenceEntity>
-                    listModel.clear();
-
-                    for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
-                        listModel.addElement(reference);
-                    }
-
-                    ImpactScrollPane.setViewportView(jList2);
-                    jList2.addMouseListener(new ListListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            JList list = (JList)e.getSource();
-                            if (e.getClickCount() == 2) {
-                                methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
-                            }
-                        }
-                    });
-
-                    ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
-                }
-            }
-        });*/
         jList1.addMouseListener(new ListListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -206,13 +179,6 @@ public class MyToolWindow {
     }
 
     public void actionRun() {
-        /*ProgressManager.getInstance().run(new Task.Backgroundable(project,"Searching") {
-            @Override
-            public void run(@NotNull ProgressIndicator indicator) {
-
-            }
-        });*/
-
         methodList = projectManager.getClassEntityList(project);
 
         ArrayList<String> strings=new ArrayList<String>();
@@ -224,7 +190,15 @@ public class MyToolWindow {
 
         setChanges(Utils.GetStringArray(strings));
         jList1.setSelectedIndex(0);
-        createImpactList();
+        if(methodList.isEmpty() && Utils.isCurrent) {
+            listModel.clear();
+            Messages.showMessageDialog("Open a document before run in 'Current' mode", "Error", Messages.getErrorIcon());
+        }else if(methodList.isEmpty()) {
+            listModel.clear();
+            Messages.showMessageDialog("No changes after last commit", "Error", Messages.getErrorIcon());
+        }else {
+            createImpactList();
+        }
     }
 
     public void createImpactList(){
@@ -238,7 +212,6 @@ public class MyToolWindow {
         jList2.addMouseListener(new ListListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JList list = (JList)e.getSource();
                 if (e.getClickCount() == 2) {
                     methodList.get(jList1.getSelectedIndex()).getImpactSet().navigate(jList2.getSelectedIndex());
                 }

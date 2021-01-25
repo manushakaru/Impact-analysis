@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ClassEntity {
     private String mName;
-    private List<MethodEntity> mMethodList = new ArrayList<MethodEntity>();
+    private List<MethodEntity> mMethodList = new ArrayList<>();
 
     public ClassEntity(String name) {
         mName = name;
