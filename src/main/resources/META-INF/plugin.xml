@@ -1,11 +1,25 @@
-<idea-plugin>
+<idea-plugin url="https://www.jetbrains.com/idea" >
     <id>org.example.PluginDemo</id>
     <name>ImpactAnalysis</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1</version>
     <vendor email="support@plugdemo.com" url="http://www.plugdemo.com">plugdemo</vendor>
 
     <description><![CDATA[
-    impact analysis plugin
+    <p> ImpactAnalysis is a new plugin created by team of <a href="https://uom.lk/"> University of Moratuwa </a> with  <a href="https://www.lseg.com/">London Stock Exchange Group</a>   for analyze an impact of a change. It enables you to see which methods of the code base going to be affected by a change, and also it provide feature to identify affected methods of a git change. </p>
+    <h3> Key features: </h3>
+    <ul>
+    <li> Current java file impact analysis – Run impact analysis on currently opened java file. </li>
+    <li> Git impact analysis – Run impact analysis on git local changes in a project. </li>
+    <li> Depth control – You are allowed to change the analysing depth. </li>
+    <li> Navigate to method – One click will navigate to the position of the code base that method exists. </li>
+   </ul>
+   <h3> Contributors: </h3>
+   <ul>
+   <li>Manusha Karunathilaka</li>
+   <li>Sachith Senanayake</li>
+   <li>Bavindu Bimsara</li>
+   </ul>
+
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
