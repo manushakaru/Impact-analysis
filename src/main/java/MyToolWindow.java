@@ -1,27 +1,24 @@
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressIndicatorProvider;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import model.MethodEntity;
 import model.ReferenceEntity;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements UI functionalities
+ *
+ * @version 1.0
+ */
 public class MyToolWindow {
+
     private javax.swing.JLabel ChangesLabel;
     private javax.swing.JScrollPane ChangesScrollPane;
     private javax.swing.JLabel ImpactLabel;
@@ -40,6 +37,13 @@ public class MyToolWindow {
     private ProjectManager projectManager;
     private Project project;
 
+    /**
+     * Constructor of the MyToolWindow
+     * Initialize ProjectManager and project
+     *
+     * @param toolWindow  Tool windows expose UI for specific functionality
+     * @param project An object representing an IntelliJ project
+     */
     public MyToolWindow(ToolWindow toolWindow,Project project) {
         initComponents();
         projectManager=new ProjectManager();
@@ -153,16 +157,17 @@ public class MyToolWindow {
         jRBGit.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(jRBGit.isSelected()){
-                    jRBCurrent.setSelected(false);
-                }else{
-                    jRBCurrent.setSelected(true);
-                }
+                jRBCurrent.setSelected(!jRBGit.isSelected());
             }
         });
 
     }
 
+    /**
+     * Set changes in change scroll pane
+     *
+     * @param strings list of strings
+     */
     public void setChanges(String[] strings){
         jList1 = new javax.swing.JList<>(strings);
         ChangesScrollPane.setViewportView(jList1);
@@ -178,10 +183,13 @@ public class MyToolWindow {
         });
     }
 
+    /**
+     * Perform run action to start the impact analysis
+     */
     public void actionRun() {
-        methodList = projectManager.getClassEntityList(project);
+        methodList = projectManager.getMethodEntityList(project);
 
-        ArrayList<String> strings=new ArrayList<String>();
+        ArrayList<String> strings=new ArrayList<>();
         int i=0;
         for (MethodEntity method : methodList) {
             strings.add(method.toString());
@@ -201,10 +209,13 @@ public class MyToolWindow {
         }
     }
 
+    /**
+     * Create impacted method list for display in the window
+     */
     public void createImpactList(){
         listModel.clear();
 
-        for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferences()) {
+        for (ReferenceEntity reference:methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferenceEntities()) {
             listModel.addElement(reference);
         }
 
@@ -218,9 +229,14 @@ public class MyToolWindow {
             }
         });
 
-        ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getReferencesString().size()+")");
+        ImpactLabel.setText("Impact("+methodList.get(jList1.getSelectedIndex()).getImpactSet().getDisplayStrings().size()+")");
     }
 
+    /**
+     * Returns main Panel of the window
+     *
+     * @return main Panel of the window
+     */
     public JPanel getContent() {
         return mainPanel;
     }

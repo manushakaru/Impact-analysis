@@ -5,8 +5,17 @@ import model.ReferenceEntity;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents panel of list items
+ *
+ * @version 1.0
+ */
 public class ListItemPanel extends javax.swing.JPanel implements ListCellRenderer<ReferenceEntity> {
 
+    /**
+     * Constructor of the ListItemPanel.
+     * Initialize the component to display list of items.
+     */
     public ListItemPanel() {
         initComponents();
     }

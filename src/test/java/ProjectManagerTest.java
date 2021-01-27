@@ -1,5 +1,4 @@
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
@@ -13,8 +12,6 @@ import java.lang.reflect.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class ProjectManagerTest extends BasePlatformTestCase {
 
@@ -36,7 +33,7 @@ public class ProjectManagerTest extends BasePlatformTestCase {
 
     public void testGetClassEntityList() {
         List<MethodEntity> methodList = new ArrayList<>();
-        List<MethodEntity> returnedMethodList = projectManager.getClassEntityList(project);
+        List<MethodEntity> returnedMethodList = projectManager.getMethodEntityList(project);
         assertEquals(methodList, returnedMethodList);
     }
     
