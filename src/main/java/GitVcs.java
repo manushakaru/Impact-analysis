@@ -132,37 +132,6 @@ public class GitVcs {
         return methodList;
     }
 
-    //return 0 if not equal
-//    public static int compare(PsiElement before, PsiElement after) {
-//        // If the PsiElement does not contain child
-//        if (before.getChildren().length == 0 && after.getChildren().length == 0) {
-//            // Convert to string and check the equality of the elements
-//            if (before.toString().trim().equals(after.toString().trim())) {
-//                System.out.println(before + "=" + after);
-//                return 1;
-//            } else {
-//                return 0;
-//            }
-//        }
-//        // If the children count is not same return 0
-//        else if (after.getChildren().length != before.getChildren().length) {
-//            return 0;
-//        }
-//        // If the PsiElement has children
-//        else {
-//            int comp = 1;
-//            // Loop through before revision children
-//            for (int i = 0; i < before.getChildren().length; i++) {
-//                // Break loop if the Both PsiElements are not same
-//                if (compare(before.getChildren()[i], after.getChildren()[i]) == 0) {
-//                    comp = 0;
-//                    break;
-//                }
-//            }
-//            return comp;
-//        }
-//    }
-
 
     /**
      * Compare two PsiElement objects and return true if the both PsiElements are equal
@@ -171,7 +140,6 @@ public class GitVcs {
      * @param after PsiElement
      * @return true if the two PsiElements are equal
      */
-
     public static boolean compare(PsiElement before, PsiElement after) {
         // If the PsiElement does not contain child
         if (before.getChildren().length == 0 && after.getChildren().length == 0) {
