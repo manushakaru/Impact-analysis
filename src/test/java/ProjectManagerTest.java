@@ -27,7 +27,7 @@ public class ProjectManagerTest extends BasePlatformTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/testData/GitVcsTest";
+        return "src/test/testData/TestProject";
     }
 
 

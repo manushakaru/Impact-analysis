@@ -55,7 +55,7 @@ public class ReferenceEntityTest extends BasePlatformTestCase {
     @NotNull
     @Override
     protected String getTestDataPath() {
-        return "src/test/testData/GitVcsTest";
+        return "src/test/testData/TestProject";
     }
 
     public void testGetPsiMethod() {

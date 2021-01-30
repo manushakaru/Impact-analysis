@@ -57,28 +57,28 @@ public class ImpactSetTest extends BasePlatformTestCase {
     @NotNull
     @Override
     protected String getTestDataPath() {
-        return "src/test/testData/GitVcsTest";
+        return "src/test/testData/TestProject";
     }
 
     @Test
     public void testAddReference() {
-        assertEquals(0,impactSet.getReferences().size());
-        assertEquals(0,impactSet.getReferencesString().size());
+        assertEquals(0,impactSet.getReferenceEntities().size());
+        assertEquals(0,impactSet.getDisplayStrings().size());
         impactSet.addReference(psiReferenceArrayList.get(0));
-        assertEquals(1,impactSet.getReferences().size());
-        assertEquals(1,impactSet.getReferencesString().size());
+        assertEquals(1,impactSet.getReferenceEntities().size());
+        assertEquals(1,impactSet.getDisplayStrings().size());
     }
 
     @Test
     public void testGetReference() {
         impactSet.addReference(psiReferenceArrayList.get(0));
-        assertEquals(psiReferenceArrayList.get(0), impactSet.getReference(0));
+        assertEquals(psiReferenceArrayList.get(0), impactSet.getReferenceEntity(0));
     }
 
     @Test
     public void testGetReferenceString() {
         impactSet.addReference(psiReferenceArrayList.get(0));
-        assertEquals(referencesStringList.get(0), impactSet.getReferenceString(0));
+        assertEquals(referencesStringList.get(0), impactSet.getDisplayString(0));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ImpactSetTest extends BasePlatformTestCase {
         for(ReferenceEntity item : psiReferenceArrayList) {
             impactSet.addReference(item);
         }
-        assertEquals(referencesStringList,impactSet.getReferencesString());
+        assertEquals(referencesStringList,impactSet.getDisplayStrings());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ImpactSetTest extends BasePlatformTestCase {
         for(ReferenceEntity item : psiReferenceArrayList) {
             impactSet.addReference(item);
         }
-        assertEquals(psiReferenceArrayList,impactSet.getReferences());
+        assertEquals(psiReferenceArrayList,impactSet.getReferenceEntities());
     }
 
     @Test

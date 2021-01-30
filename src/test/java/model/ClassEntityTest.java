@@ -13,14 +13,7 @@ import java.util.List;
 public class ClassEntityTest extends JavaCodeInsightTestCase {
 
     private MethodEntity methodEntity;
-    private String javaFile = "public class Foo extends Bar {\n" +
-            "    public Foo(int a, int b) {\n" +
-            "        super(a, b);\n" +
-            "    }\n" +
-            "    \n" +
-            "    public void greeting() {\n" +
-            "        System.out.println(\"Hello\");\n" +
-            "    }\n" +
+    private String javaFile = "public class Foo {\n" +
             "}";
     private String psiMethodString = "public void greeting() {\n" +
             "        System.out.println(\"Hello\");\n" +
